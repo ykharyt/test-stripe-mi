@@ -3,6 +3,11 @@ const stripe = require('stripe')('sk_test_gGJy8Kzf6nIVcQKGltyvWUV400bZgJaYil');
 const bodyParser = require('body-parser')
 var app = express();
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({
+	extended : true
+}));
+
 app.set('port', (process.env.PORT || 5000));
 
 app.use(express.static(__dirname + '/public'));
@@ -15,7 +20,7 @@ app.post('/ephemeral_keys', (req, res) => {
 	var customerId = req.body.customer_id;
 	var api_version = req.body.api_version;
 
-	stripe.ephemeral.create(
+	stripe.ephemeralKeys.create(
 		{customer : customerId},
 		{stripe_version : api_version}
 	).then((key) => {
