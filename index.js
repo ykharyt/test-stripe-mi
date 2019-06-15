@@ -16,6 +16,25 @@ app.use(express.static(__dirname + '/public'));
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
+app.post('/charge', (req, res) => { 
+	var customer = req.body.customer;
+	var amount = req.body.amount;
+	var currency = req.body.currency;
+
+	stripe.charges.create({
+		customer : customer,
+		amount : amount,
+		currency : currency
+	}, function(err, charge) {
+		if (err) {
+			console.log(err, req.body)
+			req.status(500).end()
+		} else {
+			res.status(200).send()
+		}
+	});	
+});
+
 app.post('/ephemeral_keys', (req, res) => { 
 	var customerId = req.body.customer_id;
 	var api_version = req.body.api_version;
