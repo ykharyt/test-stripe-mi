@@ -22,11 +22,14 @@ app.get('/charges', (req, res) => {
 	stripe.charges.list({
 		customer : customerId,
 		limit : 10
-	}).then((list) => {
-		res.status(200).send(list)
-	}).catch((err) => {
-		res.status(500).end()
-	});
+	}, function(err, list) {
+		if (err) {
+			console.log(err, req.body)
+			req.status(500).end()
+		} else {
+			res.status(200).send()
+		}
+	});	
 });
 
 
