@@ -17,9 +17,16 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 
 app.get('/charges', (req, res) => {
+	var customerId = req.body.customer_id;
 
-
-
+	stripe.charges.list({
+		customer : customerId,
+		limit : 10
+	}).then((list) => {
+		res.status(200).send(list)
+	}).catch((err) => {
+		res.status(500).end()
+	});
 });
 
 
