@@ -18,7 +18,6 @@ app.set('view engine', 'ejs');
 
 app.get('/charges', (req, res) => {
 	var customerId = req.body.customer_id;
-
 	stripe.charges.list({
 		customer : customerId,
 		limit : 10
@@ -30,6 +29,24 @@ app.get('/charges', (req, res) => {
 			res.status(200).send(list)
 		}
 	});	
+});
+
+app.get('/sofort_charge', (req, res) => {
+	stripe.createSource({
+  		type: 'sofort',
+  		amount: 1099,
+  		currency: 'eur',
+  		redirect: {
+    		return_url: 'https://minxli.com',
+  		},
+  		sofort: {
+    		country: 'DE',
+  		},
+	}).then((source) => {
+		res.status(200).send(source)
+	}).catch((err) => {
+		res.status(500).end()
+	});
 });
 
 
