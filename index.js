@@ -31,25 +31,6 @@ app.get('/charges', (req, res) => {
 	});	
 });
 
-app.get('/sofort_charge', (req, res) => {
-	stripe.createSource({
-  		type: 'sofort',
-  		amount: 1099,
-  		currency: 'eur',
-  		redirect: {
-    		return_url: 'https://minxli.com',
-  		},
-  		sofort: {
-    		country: 'DE',
-  		},
-	}).then((source) => {
-		res.status(200).send(source)
-	}).catch((err) => {
-		res.status(500).end()
-	});
-});
-
-
 app.post('/charge', (req, res) => { 
 	var customer = req.body.customer;
 	var amount = req.body.amount;
